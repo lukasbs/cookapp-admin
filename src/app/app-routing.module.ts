@@ -9,7 +9,7 @@ import {ParsePageComponent} from './parse-page/parse-page.component';
 import {LoginPageComponent} from './login-page/login-page.component';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/user-list', pathMatch: 'full', canActivate: [AuthGuard]},
+  { path: '', redirectTo: '/login-page', pathMatch: 'full'},
   { path: 'user-list', component: UserListComponent, canActivate: [AuthGuard]},
   { path: 'user-edit', component: UserEditComponent, canActivate: [AuthGuard]},
   { path: 'recipe-list', component: RecipeListComponent, canActivate: [AuthGuard]},
