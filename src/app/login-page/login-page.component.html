@@ -8,7 +8,7 @@
         <input type="text" id="loginInput" class="form-control col-xl-9 col-8 mx-auto mb-1" placeholder="Login" required="" autofocus="" #loginInput>
         <label for="passwordInput" class="sr-only">Hasło</label>
         <input type="password" id="passwordInput" class="form-control col-xl-9 col-8 m-auto" placeholder="Hasło" required="" #passwordInput>
-        <button class="btn btn-success mt-3 mb-2 col-xl-9 col-8" id="loginButton" type="button" (click)="doLogin()">Zaloguj się</button>
+        <button class="btn btn-success mt-3 mb-2 col-xl-9 col-8" id="loginButton" type="submit" (click)="doLogin()">Zaloguj się</button>
         <div class="mt-5 mb-3 col-xl-9 col-8 m-auto alert" id="messageRow" #message></div>
       </form>
     </div>

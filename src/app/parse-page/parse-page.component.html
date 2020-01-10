@@ -1,4 +1,19 @@
 <app-header></app-header>
-<p>
-  parse-page works!
-</p>
+<div class="mt-5 mb-3 col-xl-9 col-8 m-auto alert" id="messageRow" #message></div>
+<form (ngSubmit)="parseHandler(f)" #f="ngForm">
+  <div class="form-row p-2">
+    <div class="col-5">
+      <input required id="urlValue" name="urlValue" class="form-control" ngModel type="text" placeholder="Url...">
+    </div>
+    <div class="col-2">
+      <select required id="site" name="site" ngModel class="form-control">
+        <option hidden value="" disabled selected>Wybierz stronę</option>
+        <option value="przepisy">Przepisy.pl</option>
+        <option value="kukbuk">kukbuk.pl</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <button type="submit" [disabled]="!f.valid" class="btn btn-primary">Parsuj</button>
+    </div>
+  </div>
+</form>

@@ -1,2 +1,38 @@
 <app-header></app-header>
-test
+<div class="mt-5 mb-3 col-xl-9 col-8 m-auto alert" id="messageRow" #message></div>
+<form (ngSubmit)="searchHandler(f)" #f="ngForm">
+  <div class="form-row p-2">
+    <div class="col-7">
+      <input id="searchUser" name="searchUser" class="form-control" ngModel type="text" placeholder="Szukaj...">
+    </div>
+    <div class="col-2">
+      <button type="submit" class="btn btn-primary">Szukaj</button>
+    </div>
+  </div>
+</form>
+
+<div class="p-2">
+  <button type="button" class="btn btn-primary" (click)="addHandler()">Dodaj nowego użytkownika</button>
+</div>
+
+<div *ngIf="appService.userList.length > 0">
+  <div class="d-flex border border-secondary rounded m-2 bg-light" *ngFor="let user of currentPageUsers; let i = index">
+    <div class="d-flex mr-auto p-2 align-items-center">
+      <p class="mb-0 ml-3">{{user.name}}</p>
+    </div>
+    <div class="p-2">
+      <button type="button" class="btn btn-primary" (click)="editHandler(i)">Edytuj</button>
+    </div>
+    <div class="p-2">
+      <button type="button" class="btn btn-primary" (click)="deleteHandler(i)">Usuń</button>
+    </div>
+  </div>
+  <div class="row p-3">
+    <button *ngIf="appService.currentUsersPage > 0" type="button" class="btn btn-primary" (click)="previousPage()">Poprzednia strona</button>
+    <button *ngIf="appService.currentUsersPage < appService.userListChunked.length - 1" type="button" class="btn btn-primary" (click)="nextPage()">Następna strona</button>
+  </div>
+</div>
+<div *ngIf="appService.userList.length === 0">
+  <p>Brak użytkowników!</p>
+</div>
+

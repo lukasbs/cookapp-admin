@@ -13,6 +13,8 @@ import { UserListComponent } from './user-list/user-list.component';
 import {AppService} from './app.service';
 import {AuthGuard} from './auth.guard';
 import {HttpClientModule} from '@angular/common/http';
+import { RecipeViewComponent } from './recipe-view/recipe-view.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,11 +25,13 @@ import {HttpClientModule} from '@angular/common/http';
     RecipeEditComponent,
     RecipeListComponent,
     UserEditComponent,
-    UserListComponent
+    UserListComponent,
+    RecipeViewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     HttpClientModule
   ],
   providers: [

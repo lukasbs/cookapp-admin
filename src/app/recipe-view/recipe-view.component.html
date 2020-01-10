@@ -1,0 +1,27 @@
+<div class="row col-7">
+  <p id="recipeName">{{recipe.name}}</p>
+</div>
+<div class="row col-7">
+<!--  <p id="recipeImage">{{recipe.image}}</p>-->
+  <img src="{{recipe.image}}" height="300" width="500">
+</div>
+<div class="row col-7">
+  <textarea readonly id="recipeDescription" cols="100" rows="20">{{recipe.description}}</textarea>
+</div>
+
+<div *ngFor="let ingredient of recipe.ingredients; let i = index">
+  <div class="p-2 col-7">
+    <div class="p-2">
+      <p>{{ingredient.name}}</p>
+    </div>
+    <div class="p-2">
+      <p>{{ingredient.amount}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="row p-2 col-7">
+  <div class="col-2">
+    <button type="button" class="btn btn-primary" routerLink="../recipe-list">Powrót</button>
+  </div>
+</div>

@@ -1,10 +1,10 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <div class="navbar-collapse collapse justify-content-stretch">
     <ul class="navbar-nav">
-      <li routerLinkActive="active" class="nav-item"><a class="nav-link" routerLink="../user-list">Użytkownicy</a></li>
+      <li routerLinkActive="active" class="nav-item"><a class="nav-link" (click)="resetUserPage()" routerLink="../user-list">Użytkownicy</a></li>
     </ul>
     <ul class="navbar-nav">
-      <li routerLinkActive="active" class="nav-item"><a class="nav-link" routerLink="../recipe-list">Przepisy</a></li>
+      <li routerLinkActive="active" class="nav-item"><a class="nav-link" (click)="resetRecipePage()" routerLink="../recipe-list">Przepisy</a></li>
     </ul>
     <ul class="navbar-nav">
       <li routerLinkActive="active" class="nav-item"><a class="nav-link" routerLink="../parse-page">Parsowanie</a></li>

@@ -1,4 +1,24 @@
-<app-header></app-header>
-<p>
-  user-edit works!
-</p>
+<div class="mt-5 mb-3 col-xl-9 col-8 m-auto alert" id="messageRow" #message></div>
+<form (ngSubmit)="editMode ? editHandler(f) : saveHandler(f)" #f="ngForm">
+  <div class="form-row p-2 col-7">
+    <input required id="userName" name="userName" class="form-control" [ngModel]="user.name" type="text" placeholder="Nazwa...">
+  </div>
+  <div class="form-row p-2 col-7">
+    <input required id="userPassword" name="userPassword" class="form-control" [ngModel]="user.password" type="text" placeholder="Hasło...">
+  </div>
+  <div class="form-row p-2 col-7">
+    <select required id="userRole" name="userRole" class="form-control" [ngModel]="user.role">
+      <option value="USER">Rola: USER</option>
+      <option value="ADMIN">Rola: ADMIN</option>
+    </select>
+  </div>
+
+  <div class="form-row p-2 col-7">
+    <div class="col-2">
+      <button type="submit" [innerText]="editMode ? 'Edit':'Zapisz'" [disabled]="!f.valid" class="btn btn-primary"></button>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary" routerLink="../user-list">Powrót</button>
+    </div>
+  </div>
+</form>
