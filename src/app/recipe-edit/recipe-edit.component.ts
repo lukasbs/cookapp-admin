@@ -3,6 +3,7 @@ import {AppService} from '../app.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {Subscription} from 'rxjs';
+import {RecipeModel} from '../model/RecipeModel';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -15,14 +16,16 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   routerSub: Subscription;
   messageChanged: Subscription;
 
-  public recipe: {name: string, description: string, image: string, ingredients: {name: string, amount: string}[]};
+  public recipe: RecipeModel;
   public editMode;
+  public params;
 
   constructor(private appService: AppService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.routerSub = this.route.queryParams.subscribe(
       params => {
+        this.params = params;
         if (params.edit === 'true') {
           this.editMode = true;
           this.recipe = this.appService.currentlyEditedRecipe;
@@ -32,18 +35,15 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
             this.recipe = this.appService.currentlyEditedRecipe;
           } else {
             this.editMode = false;
-            this.recipe = {name: '', description: '', image: '', ingredients: []};
+            this.recipe = {name: '', description: '', image: '', source: 'cookapp', ingredients: []};
           }
         }
       }
     );
-    // put this in a method? it is used in few places
     this.messageChanged = this.appService.messageChanged.subscribe(
       (message) => {
         if (message.type === 'ERROR') {
           this.appService.addErrorMessage(this.messageRef.nativeElement, message.text);
-        } else if (message.type === 'SUCCESS') {
-          this.appService.addSuccessMessage(this.messageRef.nativeElement, message.text);
         }
       }
     );
@@ -52,7 +52,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   validateForm(form: NgForm) {
     if (form.value.recipeName === null || form.value.recipeName === '' ||
       form.value.recipeDescription === null || form.value.recipeDescription === '' ||
-      form.value.recipeImage === null || form.value.recipeImage === '') {
+      form.value.recipeImage === null || form.value.recipeImage === '' ||
+      form.value.recipeSource === null || form.value.recipeSource === '') {
       return false;
     }
 
@@ -66,7 +67,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   editHandler(form: NgForm) {
     if (this.validateForm(form)) {
-      this.appService.updateRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage,
+      this.appService.updateRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage, form.value.recipeSource,
         this.recipe.ingredients, this.recipe.name);
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić wszystkie pola!');
@@ -75,7 +76,8 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   saveHandler(form: NgForm) {
     if (this.validateForm(form)) {
-      this.appService.addRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage, this.recipe.ingredients);
+      this.appService.addRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage, 'cookapp',
+        this.recipe.ingredients);
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić wszystkie pola!');
     }

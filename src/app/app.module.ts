@@ -15,6 +15,7 @@ import {AuthGuard} from './auth.guard';
 import {HttpClientModule} from '@angular/common/http';
 import { RecipeViewComponent } from './recipe-view/recipe-view.component';
 import {FormsModule} from '@angular/forms';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {FormsModule} from '@angular/forms';
   ],
   providers: [
     AppService,
-    AuthGuard
+    AuthGuard,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

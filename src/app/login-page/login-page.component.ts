@@ -23,8 +23,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         () => {
           if (this.appService.message.type === 'ERROR') {
             this.appService.addErrorMessage(this.messageRef.nativeElement, this.appService.message.text);
-          } else if (this.appService.message.type === 'SUCCESS') {
-            this.appService.addSuccessMessage(this.messageRef.nativeElement, this.appService.message.text);
           }
         }
       );

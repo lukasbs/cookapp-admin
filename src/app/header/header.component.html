@@ -10,4 +10,17 @@
       <li routerLinkActive="active" class="nav-item"><a class="nav-link" routerLink="../parse-page">Parsowanie</a></li>
     </ul>
   </div>
+  <div class="col-5">
+    <div class="row">
+      <p style="color: white; margin-bottom: 0">Backend status: </p>
+      <div class="indicator" #backStatus></div>
+    </div>
+    <div class="row">
+      <p style="color: white; margin-bottom: 0">Client app status: </p>
+      <div class="indicator" #clientStatus></div>
+    </div>
+  </div>
+  <div class="col-1">
+    <button type="button" class="btn btn-primary" (click)="logoutHandler()">Wyloguj</button>
+  </div>
 </nav>

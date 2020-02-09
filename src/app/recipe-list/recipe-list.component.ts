@@ -12,7 +12,7 @@ import {Subscription} from 'rxjs';
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   @ViewChild('message') messageRef: ElementRef;
-  public currentPageRecipes = [];
+  public currentPageRecipes = null;
 
   recipeListChanged: Subscription;
   currentRecipesPageChanged: Subscription;
@@ -20,11 +20,10 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
   constructor(private appService: AppService, private router: Router) { }
 
-  ngOnInit() {
-    this.appService.getAllRecipes();
-
+  async ngOnInit() {
     this.recipeListChanged = this.appService.recipeListChanged.subscribe(
       (recipeList) => {
+        recipeList.sort((a, b) => a.name.localeCompare(b.name));
         this.appService.recipeListChunked = this.appService.cutIntoChunks(recipeList);
 
         if (this.appService.currentRecipesPage > this.appService.recipeListChunked.length - 1) {
@@ -48,6 +47,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.appService.getAllRecipes();
   }
 
   nextPage() {

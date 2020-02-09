@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AppService} from '../app.service';
 import {NgForm} from '@angular/forms';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-parse-page',
@@ -9,10 +10,18 @@ import {NgForm} from '@angular/forms';
 })
 export class ParsePageComponent implements OnInit {
   @ViewChild('message') messageRef: ElementRef;
+  messageChanged: Subscription;
 
   constructor(private appService: AppService) { }
 
   ngOnInit() {
+    this.messageChanged = this.appService.messageChanged.subscribe(
+      (message) => {
+        if (message.type === 'ERROR') {
+          this.appService.addErrorMessage(this.messageRef.nativeElement, message.text);
+        }
+      }
+    );
   }
 
   validateForm(form: NgForm) {

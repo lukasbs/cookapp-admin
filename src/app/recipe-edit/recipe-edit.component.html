@@ -3,6 +3,9 @@
   <div class="form-row p-2 col-7">
     <input required id="recipeName" name="recipeName" class="form-control" [ngModel]="recipe.name" type="text" placeholder="Nazwa...">
   </div>
+  <div class="form-row p-2 col-7" *ngIf="params.parse === 'true' || params.edit === 'true'">
+    <input required id="recipeSource" name="recipeSource" class="form-control" [ngModel]="recipe.source" type="text" placeholder="Źródło...">
+  </div>
   <div class="form-row p-2 col-7">
     <input required id="recipeImage" name="recipeImage" class="form-control" [ngModel]="recipe.image" type="text" placeholder="Zdjęcie...">
   </div>

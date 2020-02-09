@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 })
 export class UserListComponent implements OnInit, OnDestroy {
   @ViewChild('message') messageRef: ElementRef;
-  public currentPageUsers = [];
+  public currentPageUsers = null;
 
   userListChanged: Subscription;
   currentUsersPageChanged: Subscription;
@@ -20,10 +20,9 @@ export class UserListComponent implements OnInit, OnDestroy {
   constructor(private appService: AppService, private router: Router) { }
 
   ngOnInit() {
-    this.appService.getAllUsers();
-
     this.userListChanged = this.appService.userListChanged.subscribe(
       (userList) => {
+        userList.sort((a, b) => a.name.localeCompare(b.name));
         this.appService.userListChunked = this.appService.cutIntoChunks(userList);
 
         if (this.appService.currentUsersPage > this.appService.userListChunked.length - 1) {
@@ -47,6 +46,9 @@ export class UserListComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    this.appService.getAllUsers();
+
   }
 
   nextPage() {

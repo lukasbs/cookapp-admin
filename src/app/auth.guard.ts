@@ -1,40 +1,37 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, Router} from '@angular/router';
+import {ActivatedRoute, CanActivate, Router} from '@angular/router';
 import {AppService} from './app.service';
-import * as jwt_decode from 'jwt-decode';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private appService: AppService) {}
 
-  canActivate() {
+  constructor(private router: Router, private appService: AppService, private http: HttpClient) {}
+
+  async canActivate() {
+    if (this.router.routerState.snapshot.url === '/parse-page') { return true; }
+
     this.appService.message = {text: '', type: ''};
     this.appService.messageChanged.next(this.appService.message);
-    let tokenValid = false;
-    const token = localStorage.getItem('token');
 
-    if (token !== null) {
-      // For better security, makeisValid endpoint in backend to check user token
-      try {
-        const tokenDecoded = jwt_decode(token);
-        if (this.appService.userData.name !== null && this.appService.userData.password !== null &&
-          this.appService.userData.name !== '' && this.appService.userData.password !== '') {
-          tokenValid = true;
-        } else {
-          tokenValid = false;
-        }
-      } catch (Error) {
-        tokenValid = false;
-      }
+    let data;
+
+    try {
+      data = await this.http.post('http://localhost:8080/api/user/auth/isvalid', {}, {
+        observe: 'response',
+        withCredentials: true
+      }).toPromise();
+    } catch (e) {
+      console.error(e);
     }
 
-    if (token !== null && token !== '' && tokenValid) {
-      return true;
-    } else {
+    if (data === undefined || data.status !== 200) {
       this.router.navigate(['/login-page']);
       this.appService.message = {text: 'Proszę się zalogować aby uzyskać dostęp do tego zasobu!', type: 'ERROR'};
       this.appService.messageChanged.next(this.appService.message);
       return false;
+    } else {
+      return true;
     }
   }
 }

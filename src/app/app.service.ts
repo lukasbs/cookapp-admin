@@ -2,52 +2,51 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Subject} from 'rxjs';
+import {MessageModel} from './model/MessageModel';
+import {UserModel} from './model/UserModel';
+import {RecipeModel} from './model/RecipeModel';
 
 @Injectable()
 export class AppService {
-  public message: {text: string, type: string};
-  public messageChanged = new Subject<{text: string, type: string}>();
+  public message: MessageModel = {text: '', type: ''};
+  public messageChanged = new Subject<MessageModel>();
 
   public userData;
 
-  public userList: {name: string, password: string, role: string}[] = [];
-  public userListChanged = new Subject<{name: string, password: string, role: string}[]>();
+  public userList: UserModel[] = [];
+  public userListChanged = new Subject<UserModel[]>();
 
   public currentUsersPage = 0;
   public currentUsersPageChanged = new Subject<number>();
   public userListChunked = [];
 
-  public currentlyEditedUser: {name: string, password: string, role: string};
-  public currentlyEditedUserChanged = new Subject<{name: string, password: string, role: string}>();
+  public currentlyEditedUser: UserModel;
+  public currentlyEditedUserChanged = new Subject<UserModel>();
 
-  public recipeList: {name: string, description: string, image: string, ingredients: {name: string, amount: string}[]}[] = [];
-  public recipeListChanged = new Subject<{name: string, description: string, image: string,
-    ingredients: {name: string, amount: string}[]}[]>();
+  public recipeList: RecipeModel[] = [];
+  public recipeListChanged = new Subject<RecipeModel[]>();
 
   public currentRecipesPage = 0;
   public currentRecipesPageChanged = new Subject<number>();
   public recipeListChunked = [];
 
-  public currentlyEditedRecipe: {name: string, description: string, image: string, ingredients: {name: string, amount: string}[]};
-  public currentlyEditedRecipeChanged = new Subject<{name: string, description: string, image: string,
-    ingredients: {name: string, amount: string}[]}>();
+  public currentlyEditedRecipe: RecipeModel;
+  public currentlyEditedRecipeChanged = new Subject<RecipeModel>();
 
   constructor(private http: HttpClient, private router: Router) {
-    this.message = {text: '', type: ''};
   }
 
   doLogin(login, pass) {
     this.http.post('http://localhost:8080/api/user/admin/auth/login', {
       name: login,
       password: pass
-    }, {observe: 'response'}).subscribe(
+    }, {
+      observe: 'response',
+      withCredentials: true
+    }).subscribe(
       data => {
         this.userData = data.body;
-        localStorage.setItem('token', this.userData.token);
-
         this.router.navigate(['/user-list']);
-        this.message = {text: 'Udane Logowanie!', type: 'SUCCESS'};
-        this.messageChanged.next(this.message);
       },
       err => {
         if (err.status === 403) {
@@ -62,16 +61,12 @@ export class AppService {
 
   getAllUsers() {
     this.http.get('http://localhost:8080/api/user/admin/all', {
-        headers: { Authorization : localStorage.getItem('token') },
-        observe: 'response'
+        observe: 'response',
+        withCredentials: true
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.userList = data.body as {name: string, password: string, role: string}[];
-        } else if (data.status === 204) {
-          this.userList = [] as {name: string, password: string, role: string}[];
-        } else {
-          console.error(data);
+          this.userList = data.body as UserModel[];
         }
         this.userListChanged.next(this.userList);
       },
@@ -89,16 +84,12 @@ export class AppService {
 
   getUserByName(name: string) {
     this.http.get('http://localhost:8080/api/user/admin/get/' + name, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.userList = data.body as {name: string, password: string, role: string}[];
-        } else if (data.status === 204) {
-          this.userList = [] as {name: string, password: string, role: string}[];
-        } else {
-          console.log(data);
+          this.userList = data.body as UserModel[];
         }
         this.userListChanged.next(this.userList);
       },
@@ -115,17 +106,13 @@ export class AppService {
 
   deleteUser(userName: string) {
     this.http.delete('http://localhost:8080/api/user/admin/delete/' + userName, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.message = {text: 'Usunięto użytkownika!', type: 'SUCCESS'};
           this.getAllUsers();
-        } else {
-          console.log(data);
         }
-        this.messageChanged.next(this.message);
       },
       err => {
         if (err.status === 401) {
@@ -148,18 +135,13 @@ export class AppService {
       password: newPassword,
       role: newRole
     }, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.message = {text: 'Poprawnie edytowano użytkownika!', type: 'SUCCESS'};
           this.router.navigate(['/user-list']);
-          console.log('http://localhost:8080/api/user/admin/update/' + oldName);
-        } else {
-          console.log(data);
         }
-        this.messageChanged.next(this.message);
       },
       err => {
         if (err.status === 401) {
@@ -182,17 +164,13 @@ export class AppService {
       password: userPassword,
       role: userRole
     }, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 201) {
-          this.message = {text: 'Poprawnie dodano użytkownika!', type: 'SUCCESS'};
           this.router.navigate(['/user-list']);
-        } else {
-          console.log(data);
         }
-        this.messageChanged.next(this.message);
       },
       err => {
         if (err.status === 401) {
@@ -213,17 +191,12 @@ export class AppService {
 
   getAllRecipes() {
     this.http.get('http://localhost:8080/api/recipe/all', {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.recipeList = data.body as {name: string, description: string, image: string,
-            ingredients: {name: string, amount: string}[]}[];
-        } else if (data.status === 204) {
-          this.recipeList = [] as {name: string, description: string, image: string, ingredients: {name: string, amount: string}[]}[];
-        } else {
-          console.log(data);
+          this.recipeList = data.body as RecipeModel[];
         }
         this.recipeListChanged.next(this.recipeList);
       },
@@ -241,17 +214,12 @@ export class AppService {
 
   getRecipeByName(name: string) {
     this.http.get('http://localhost:8080/api/recipe/admin/get/' + name, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.recipeList = data.body as {name: string, description: string, image: string,
-            ingredients: {name: string, amount: string}[]}[];
-        } else if (data.status === 204) {
-          this.recipeList = [] as {name: string, description: string, image: string, ingredients: {name: string, amount: string}[]}[];
-        } else {
-          console.log(data);
+          this.recipeList = data.body as RecipeModel[];
         }
         this.recipeListChanged.next(this.recipeList);
       },
@@ -267,24 +235,21 @@ export class AppService {
     );
   }
 
-  addRecipe(name: string, description: string, image: string, ingredients: {name: string, amount: string}[]) {
+  addRecipe(name: string, description: string, image: string, source: string, ingredients: {name: string, amount: string}[]) {
     this.http.post('http://localhost:8080/api/recipe/admin/add', {
       name,
       description,
       image,
       ingredients,
+      source
     }, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 201) {
-          this.message = {text: 'Poprawnie dodano przepis!', type: 'SUCCESS'};
           this.router.navigate(['/recipe-list']);
-        } else {
-          console.log(data);
         }
-        this.messageChanged.next(this.message);
       },
       err => {
         if (err.status === 401) {
@@ -303,24 +268,22 @@ export class AppService {
     );
   }
 
-  updateRecipe(name: string, description: string, image: string, ingredients: {name: string, amount: string}[], oldName: string) {
+  updateRecipe(name: string, description: string, image: string, source: string,
+               ingredients: {name: string, amount: string}[], oldName: string) {
     this.http.put('http://localhost:8080/api/recipe/admin/update/' + oldName, {
       name,
       description,
       image,
-      ingredients
+      ingredients,
+      source
     }, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.message = {text: 'Poprawnie edytowano przepis!', type: 'SUCCESS'};
           this.router.navigate(['/recipe-list']);
-        } else {
-          console.log(data);
         }
-        this.messageChanged.next(this.message);
       },
       err => {
         if (err.status === 401) {
@@ -339,11 +302,10 @@ export class AppService {
 
   deleteRecipe(name: string) {
     this.http.delete('http://localhost:8080/api/recipe/admin/delete/' + name, {
-      headers: { Authorization : localStorage.getItem('token') },
+      withCredentials: true,
       observe: 'response'
     }).subscribe(
       data => {
-        console.log(data);
         this.getAllRecipes();
       },
       err => {
@@ -368,7 +330,6 @@ export class AppService {
       responseType: 'text'
     }).subscribe(
       data => {
-        console.log(data);
         if (site === 'przepisy') {
           this.przepisyAlgorythm(data, url);
         } else if ('kukbuk') {
@@ -376,70 +337,81 @@ export class AppService {
         }
       },
       err => {
-        console.error(err);
+        this.message = {text: 'Błąd podczas parsowania!', type: 'ERROR'};
+        this.messageChanged.next(this.message);
       }
     );
   }
 
   przepisyAlgorythm(data, url) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(data.body, 'text/html');
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data.body, 'text/html');
 
-    const name = doc.getElementsByClassName('recipe-details-title').item(0).firstChild.firstChild.textContent +
-      '%Przepis ze strony przepisy.pl - oryginał: ' + url;
+      const name = doc.getElementsByClassName('recipe-details-title').item(0).firstChild.firstChild.textContent;
 
-    let description = '';
-    const descriptionNodes = doc.getElementsByClassName('recipe-container-steps').item(0).getElementsByTagName('li');
-    for (let i = 0; i < descriptionNodes.length; i++) {
-      description += '  ' + descriptionNodes.item(i).getElementsByClassName('step-responsive-text').item(0).textContent.trim() + '\n';
+      let description = '';
+      const descriptionNodes = doc.getElementsByClassName('recipe-container-steps').item(0).getElementsByTagName('li');
+      for (let i = 0; i < descriptionNodes.length; i++) {
+        description += '  ' + descriptionNodes.item(i).getElementsByClassName('step-responsive-text').item(0).textContent.trim() + '\n';
+      }
+
+      const ingredients = [];
+      const ingredientsNodes = doc.getElementsByClassName('ingredient-ul').item(0).getElementsByClassName('ingredient-li');
+      for (let i = 0; i < ingredientsNodes.length; i++) {
+        const ingredientName = ingredientsNodes.item(i).getElementsByClassName('ingredient-name').item(0).textContent;
+        const ingredientAmount = ingredientsNodes.item(i).getElementsByClassName('quantity').length > 0 ?
+          ingredientsNodes.item(i).getElementsByClassName('quantity').item(0).textContent : '0 g';
+        ingredients.push({name: ingredientName, amount: ingredientAmount});
+      }
+
+      const image = doc.getElementsByClassName('recipe-preview-image').item(0).getElementsByClassName('holder')
+        .item(0).getElementsByTagName('img').item(0).getAttribute('data-src');
+
+      this.currentlyEditedRecipe = {name, description, image, source: 'Przepis ze strony przepisy.pl - oryginał: ' + url, ingredients};
+      this.currentlyEditedRecipeChanged.next(this.currentlyEditedRecipe);
+      this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' } });
+    } catch (Error) {
+      this.message = {text: 'Błąd podczas parsowania!', type: 'ERROR'};
+      this.messageChanged.next(this.message);
     }
-
-    const ingredients = [];
-    const ingredientsNodes = doc.getElementsByClassName('ingredient-ul').item(0).getElementsByClassName('ingredient-li');
-    for (let i = 0; i < ingredientsNodes.length; i++) {
-      const ingredientName = ingredientsNodes.item(i).getElementsByClassName('ingredient-name').item(0).textContent;
-      const ingredientAmount = ingredientsNodes.item(i).getElementsByClassName('quantity').item(0).textContent;
-      ingredients.push({name: ingredientName, amount: ingredientAmount});
-    }
-
-    const image = doc.getElementsByClassName('recipe-preview-image').item(0).getElementsByClassName('holder')
-      .item(0).getElementsByTagName('img').item(0).getAttribute('data-src');
-
-    this.currentlyEditedRecipe = {name, description, image, ingredients};
-    this.currentlyEditedRecipeChanged.next(this.currentlyEditedRecipe);
-    this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' } });
-
   }
 
   kukbukAlgorythm(data, url) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(data.body, 'text/html');
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data.body, 'text/html');
 
-    const name = doc.getElementsByClassName('heading').item(0).firstChild.textContent +
-      '%Przepis ze strony kukbuk.pl - oryginał: ' + url;
+      const name = doc.getElementsByClassName('heading').item(0).firstChild.textContent;
 
-    let description = '';
+      let description = '';
 
-    const descriptionNodes = doc.getElementsByClassName('widget-text');
-    for (let i = 0; i < descriptionNodes.length; i++) {
-      description += '  ' + descriptionNodes.item(i).textContent.trim() + '\n';
+      const descriptionNodes = doc.getElementsByClassName('widget-text');
+      for (let i = 0; i < descriptionNodes.length; i++) {
+        description += '  ' + descriptionNodes.item(i).textContent.trim() + '\n';
+      }
+
+      const ingredients = [];
+      const ingredientsNodes = doc.getElementsByClassName('ingredient');
+      for (let i = 0; i < ingredientsNodes.length; i++) {
+        if (!ingredientsNodes.item(i).classList.contains('ingredient--header')) {
+          const ingredientName = ingredientsNodes.item(i).getElementsByClassName('name').item(0).textContent;
+          const ingredientAmount = ingredientsNodes.item(i).getElementsByClassName('quantity').item(0).textContent;
+          ingredients.push({name: ingredientName, amount: ingredientAmount});
+        }
+      }
+
+      // const image = doc.getElementsByClassName('img lazy').item(0).getAttribute('data-srcset').split(' ')[0];
+      const image = doc.getElementsByClassName('img-wrap').item(0).getElementsByTagName('img')[0].src;
+
+      this.currentlyEditedRecipe = {name, description, image, source: 'Przepis ze strony kukbuk.pl - oryginał: ' + url, ingredients};
+      this.currentlyEditedRecipeChanged.next(this.currentlyEditedRecipe);
+      this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' } });
+
+    } catch (Error) {
+      this.message = {text: 'Błąd podczas parsowania!', type: 'ERROR'};
+      this.messageChanged.next(this.message);
     }
-
-    const ingredients = [];
-    const ingredientsNodes = doc.getElementsByClassName('ingredient');
-    for (let i = 0; i < ingredientsNodes.length; i++) {
-      const ingredientName = ingredientsNodes.item(i).getElementsByClassName('name').item(0).textContent;
-      const ingredientAmount = ingredientsNodes.item(i).getElementsByClassName('quantity').item(0).textContent;
-      ingredients.push({name: ingredientName, amount: ingredientAmount});
-    }
-
-    // const image = doc.getElementsByClassName('img lazy').item(0).getAttribute('data-srcset').split(' ')[0];
-    const image = doc.getElementsByClassName('img-wrap').item(0).getElementsByTagName('img')[0].src;
-
-    this.currentlyEditedRecipe = {name, description, image, ingredients};
-    this.currentlyEditedRecipeChanged.next(this.currentlyEditedRecipe);
-    this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' } });
-
   }
 
   addErrorMessage(element, message) {
@@ -448,24 +420,13 @@ export class AppService {
     element.innerHTML = message;
   }
 
-  addSuccessMessage(element, message) {
-    this.clearClass(element);
-    element.classList.add('alert-success');
-    element.innerHTML = message;
-  }
-
   clearClass(element) {
-    if (element.classList.contains('alert-success')) {
-      element.classList.remove('alert-success');
-    } else if (element.classList.contains('alert-danger')) {
-      element.classList.remove('alert-danger');
-    }
     element.innerHTML = '';
     this.message = {text: '', type: ''};
   }
 
   cutIntoChunks(initialList) {
-    const chunkSize = 2;
+    const chunkSize = 5;
     const listChunked = [];
 
     for (let i = 0, j = 0; i < initialList.length; i += chunkSize, j++) {

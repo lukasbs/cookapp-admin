@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {AppService} from '../app.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
+import {UserModel} from '../model/UserModel';
 
 @Component({
   selector: 'app-user-edit',
@@ -15,7 +16,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   routerSub: Subscription;
   messageChanged: Subscription;
 
-  public user: {name: string, password: string, role: string};
+  public user: UserModel;
   public editMode;
 
   constructor(private appService: AppService, private router: Router, private route: ActivatedRoute) { }
