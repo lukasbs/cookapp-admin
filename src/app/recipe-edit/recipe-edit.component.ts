@@ -76,7 +76,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
 
   saveHandler(form: NgForm) {
     if (this.validateForm(form)) {
-      this.appService.addRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage, 'cookapp',
+      this.appService.addRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage, form.value.recipeSource,
         this.recipe.ingredients);
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić wszystkie pola!');

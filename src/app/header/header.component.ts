@@ -14,14 +14,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   intervalId = setInterval( () => {
       this.checkBackEnd();
-      // this.checkClient();
+      this.checkClient();
     }, 5000);
 
   constructor(private appService: AppService, private http: HttpClient, private router: Router) { }
 
   ngOnInit() {
     this.checkBackEnd();
-    // this.checkClient();
+    this.checkClient();
   }
 
   resetRecipePage() {
@@ -57,9 +57,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login-page']);
   }
 
-  // checkClient() {
-  //
-  // }
+  checkClient() {
+    this.http.post('http://localhost:8080/api/user/auth/check', {}, {
+      observe: 'response',
+      withCredentials: true
+    }).subscribe(
+      data => {
+        this.clientRef.nativeElement.style.backgroundColor = 'green';
+      },
+      err => {
+        this.clientRef.nativeElement.style.backgroundColor = 'red';
+      }
+    );
+  }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);

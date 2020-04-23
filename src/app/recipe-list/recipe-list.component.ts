@@ -28,6 +28,8 @@ export class RecipeListComponent implements OnInit, OnDestroy {
 
         if (this.appService.currentRecipesPage > this.appService.recipeListChunked.length - 1) {
           this.appService.currentRecipesPage = this.appService.recipeListChunked.length - 1;
+        } else if (this.appService.currentRecipesPage < 0) {
+          this.appService.currentRecipesPage = 0;
         }
 
         this.appService.currentRecipesPageChanged.next(this.appService.currentRecipesPage);
