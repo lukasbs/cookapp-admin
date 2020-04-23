@@ -1,6 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AppService} from '../app.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {Subscription} from 'rxjs';
 
@@ -17,7 +18,7 @@ export class UserListComponent implements OnInit, OnDestroy {
   currentUsersPageChanged: Subscription;
   messageChanged: Subscription;
 
-  constructor(private appService: AppService, private router: Router) { }
+  constructor(private appService: AppService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.userListChanged = this.appService.userListChanged.subscribe(
@@ -63,19 +64,39 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.appService.currentUsersPageChanged.next(this.appService.currentUsersPage);
   }
 
-  addHandler() {
-    this.router.navigate(['/user-edit'], { queryParams: { edit: 'false' } });
+  addHandler(userCreateEdit) {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { edit: 'false' },
+        queryParamsHandling: 'merge'
+      });
+    this.modalService.open(userCreateEdit, { centered: true, backdropClass: 'modal-dark-backdrop'})
+      .result.then(() => {}, () => {
+        this.router.navigate(['/user-list']);
+      });
   }
 
-  editHandler(i: number) {
+  editHandler(i: number, userCreateEdit) {
     this.appService.currentlyEditedUser = this.currentPageUsers[i];
     this.appService.currentlyEditedUserChanged.next(this.appService.currentlyEditedUser);
-    this.router.navigate(['/user-edit'], { queryParams: { edit: 'true' } });
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { edit: 'true' },
+        queryParamsHandling: 'merge'
+      });
+    this.modalService.open(userCreateEdit, { centered: true, backdropClass: 'modal-dark-backdrop'})
+      .result.then(() => {}, () => {
+        this.router.navigate(['/user-list']);
+      });
   }
 
   deleteHandler(i: number) {
-    this.appService.clearClass(this.messageRef.nativeElement);
-    this.appService.deleteUser(this.appService.userListChunked[this.appService.currentUsersPage][i].name);
+    // this.appService.clearClass(this.messageRef.nativeElement);
+    // this.appService.deleteUser(this.appService.userListChunked[this.appService.currentUsersPage][i].name);
   }
 
   searchHandler(form: NgForm) {

@@ -1,9 +1,59 @@
-.indicator {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  background-color: red;
-  border: 1px solid black;
-  margin-top: 8px;
-  margin-left: 8px;
+@import "../../variables";
+
+%default-nav-section {
+  width: 33%;
+}
+
+.navigation {
+  background: $navigation-bg-color;
+  padding: $navigation-padding;
+  color: $navigation-color;
+  box-shadow: $navigation-box-shadow;
+
+  .nav-menu {
+    @extend %default-nav-section;
+
+    .nav-item {
+      >.nav-link {
+        margin: $link-margin;
+        border-bottom: $link-border-bottom;
+        padding: $link-padding;
+        color: $link-text-color;
+
+        &:hover {
+          border-color: $link-hover-border-color;
+        }
+
+        &.active {
+          border-color:$link-active-border-color;
+        }
+
+        >fa-icon {
+          margin: $link-icon-margin;
+        }
+      }
+    }
+
+  }
+
+  .app-watcher {
+    @extend %default-nav-section;
+
+    .app-watcher-text {
+      margin: $app-watcher-text-margin;
+    }
+
+    fa-icon {
+      color: $status-bulb-color;
+      margin: $status-bulb-margin;
+    }
+  }
+
+  .user-section {
+    @extend %default-nav-section;
+
+    fa-icon{
+      margin: $logout-icon-margin;
+    }
+  }
 }

@@ -1,0 +1,50 @@
+@import "../../variables";
+
+.create-edit-recipe {
+  width: 80%;
+  margin: $create-edit-recipe-margin;
+
+  .ingredients-panel {
+
+    .ingredients-title {
+      margin: $create-edit-recipe-ingredients-title-margin;
+      line-height: 2.5;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      flex: auto;
+      color: $create-edit-recipe-ingredients-title-color;
+      border-color: $create-edit-recipe-ingredients-title-border-color;
+      border-radius: $create-edit-recipe-ingredients-title-border-radius;
+      background: $create-edit-recipe-ingredients-title-background;
+    }
+
+    .ingredient-body {
+      width: 100%;
+      margin: $create-edit-recipe-ingredient-body-margin;
+
+      .ingredient-index {
+        width: 8%;
+
+        span {
+          width: 100%;
+        }
+      }
+
+      .ingredient-name {
+        width: 45%
+      }
+    }
+
+    .ingredients-footer {
+      margin: $create-edit-recipe-ingredients-footer-margin;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}
+
+fa-icon {
+  margin: $create-edit-recipe-fa-icon-margin;
+}
+

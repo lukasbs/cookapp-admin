@@ -20,9 +20,9 @@ export class LoginPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.messageSubscription = this.appService.messageChanged
       .subscribe(
-        () => {
-          if (this.appService.message.type === 'ERROR') {
-            this.appService.addErrorMessage(this.messageRef.nativeElement, this.appService.message.text);
+        (message) => {
+          if (message.type === 'ERROR') {
+            this.appService.addErrorMessage(this.messageRef.nativeElement, message.text);
           }
         }
       );

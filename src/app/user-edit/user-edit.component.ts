@@ -1,9 +1,10 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {AppService} from '../app.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {UserModel} from '../model/UserModel';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-user-edit',
@@ -12,6 +13,7 @@ import {UserModel} from '../model/UserModel';
 })
 export class UserEditComponent implements OnInit, OnDestroy {
   @ViewChild('message') messageRef: ElementRef;
+  @Input() userCreateEditTitle: string;
 
   routerSub: Subscription;
   messageChanged: Subscription;
@@ -19,7 +21,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   public user: UserModel;
   public editMode;
 
-  constructor(private appService: AppService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private appService: AppService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.routerSub = this.route.queryParams.subscribe(
@@ -52,6 +54,7 @@ export class UserEditComponent implements OnInit, OnDestroy {
   editHandler(form: NgForm) {
     if (this.validateForm(form)) {
       this.appService.updateUser(this.user.name, form.value.userName, form.value.userPassword, form.value.userRole);
+      this.closeHandler();
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić wszystkie pola!');
     }
@@ -60,9 +63,14 @@ export class UserEditComponent implements OnInit, OnDestroy {
   saveHandler(form: NgForm) {
     if (this.validateForm(form)) {
       this.appService.addUser(form.value.userName, form.value.userPassword, form.value.userRole);
+      this.closeHandler();
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić wszystkie pola!');
     }
+  }
+
+  closeHandler() {
+    this.modalService.dismissAll();
   }
 
   ngOnDestroy(): void {

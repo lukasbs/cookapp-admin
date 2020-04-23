@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ContentChild, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewContainerRef} from '@angular/core';
 import {AppService} from '../app.service';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -9,8 +9,12 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  // @ContentChild('backStatus') backRef: QueryList<ElementRef>;
   @ViewChild('backStatus') backRef: ElementRef;
   @ViewChild('clientStatus') clientRef: ElementRef;
+
+  backStatus: HTMLElement;
+  clientStatus: HTMLElement;
 
   intervalId = setInterval( () => {
       this.checkBackEnd();
@@ -21,7 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.checkBackEnd();
-    // this.checkClient();
+    this.checkClient();
   }
 
   resetRecipePage() {
@@ -40,10 +44,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       withCredentials: true
     }).subscribe(
       data => {
-        this.backRef.nativeElement.style.backgroundColor = 'green';
-      },
-      err => {
-        this.backRef.nativeElement.style.backgroundColor = 'red';
+        this.backRef.nativeElement.children[1].style.color = '#7bed9f';
+      }, err => {
+        this.backRef.nativeElement.children[1].style.color = '#ff6b81';
       }
     );
   }
@@ -57,9 +60,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login-page']);
   }
 
-  // checkClient() {
-  //
-  // }
+  checkClient() {
+    // this.http.get('', {
+    //   observe: 'response',
+    //   withCredentials: true
+    // }).subscribe(
+      // data => {
+      //   this.clientRef.nativeElement.children[1].style.color = '#7bed9f';
+      // }, err => {
+        this.clientRef.nativeElement.children[1].style.color = '#ff6b81';
+      // }
+  }
 
   ngOnDestroy(): void {
     clearInterval(this.intervalId);

@@ -1,6 +1,8 @@
+/* tslint:disable:max-line-length */
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import {NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -17,6 +19,12 @@ import { RecipeViewComponent } from './recipe-view/recipe-view.component';
 import {FormsModule} from '@angular/forms';
 import {CookieService} from 'ngx-cookie-service';
 
+import {library} from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUsers, faList, faLayerGroup, faLightbulb, faSignOutAlt, faUserEdit, faUserPlus, faUserTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown, faTimes, faEdit, faPlus, faBan, faCheck, faBars} from '@fortawesome/free-solid-svg-icons';
+import { faListAlt, faNewspaper} from '@fortawesome/free-regular-svg-icons';
+
+library.add(faUsers, faListAlt, faNewspaper, faLayerGroup, faLightbulb, faSignOutAlt, faUserEdit, faUserPlus, faUserTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown, faTimes, faList, faEdit, faPlus, faBan, faCheck, faBars);
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,12 +41,15 @@ import {CookieService} from 'ngx-cookie-service';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule,
+    NgbModule
   ],
   providers: [
     AppService,
     AuthGuard,
-    CookieService
+    CookieService,
+    NgbActiveModal
   ],
   bootstrap: [AppComponent]
 })

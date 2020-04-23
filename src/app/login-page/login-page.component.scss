@@ -1,5 +1,43 @@
-.bg-dark{
-  height: 100vh;
+@import "../../variables";
+
+.login {
+  width: 40%;
+  max-width: 450px;
+
+  .login-container {
+    padding: $login-page-container-padding;
+
+    img.login-image {
+      display: block;
+      height: 100px;
+      width: 100px;
+      margin: $login-page-image-margin;
+    }
+
+    .login-form {
+      margin: $login-page-form-margin;
+
+      > h1 {
+        color: $second-dark-color;
+        text-align: center;
+        margin: $login-page-h1-margin;
+      }
+
+      >*{
+        margin: $login-page-form-all-children-margin;
+      }
+
+      .login-button {
+        width: 100%;
+      }
+    }
+  }
+
+
+  .notification{
+    width: 100% !important;
+    margin: $login-notification-margin !important;
+  }
 }
 
 

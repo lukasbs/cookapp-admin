@@ -1,0 +1,58 @@
+@import "../../variables";
+@import "../../styles";
+
+.users-content {
+  width: 70%;
+  max-width: 1300px;
+
+  hr {
+    @extend %default-hr;
+  }
+
+  .users-misc-panel {
+    width: 100%;
+    padding: $users-misc-panel-padding;
+
+    .users-add-button{
+      margin: $users-add-button-margin;
+    }
+
+    .search-bar{
+      width: 55% !important;
+    }
+  }
+
+  .users-container{
+    padding: $users-container-padding;
+
+    .user-container {
+      width: 80%;
+      border: $user-container-border;
+      background: $user-container-background;
+      border: $user-container-border;
+      border-radius: $user-container-border-radius;
+      margin: $user-container-margin;
+      padding: $user-container-padding;
+      color: $user-container-color;
+      align-items: center;
+      display: inline-flex;
+
+      .user-name-text {
+        margin: $user-name-text-margin;
+        color: $user-name-text-color;
+        white-space: nowrap;
+        overflow: hidden;
+        display: inline-flex;
+      }
+
+      fa-icon {
+        margin: $users-container-fa-icon-margin;
+      }
+    }
+  }
+
+  .footer-icon {
+    margin: $users-footer-icon-margin;
+  }
+}
+

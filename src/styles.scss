@@ -1,1 +1,324 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Tomorrow&display=swap');
+@import "variables";
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+//MAIN ##################################################
+
+body {
+  font-family: 'Tomorrow', sans-serif !important;
+  background: $main-color !important;
+  width: 100% !important;
+}
+
+%default-hr {
+  border-color: $hr-border-color !important;
+  margin: $hr-margin;
+}
+
+%default-container {
+  border: $default-container-border !important;
+  box-shadow: $default-container-box-shadow !important;
+}
+
+%default-container-footer {
+  background-color: $main-dark-color !important;
+  color:$second-light-color !important;
+}
+
+@media all and (max-width: 1200px) {
+  html {
+    font-size: 15px !important;
+  }
+}
+
+@media all and (max-width: 991px) {
+
+  html {
+    font-size: 14px !important;
+  }
+
+  h1 {
+    font-size: 2rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .login {
+    width: 45% !important;
+
+    .login-container {
+      padding: 2em 3.5em !important;
+    }
+  }
+
+  .nav-link {
+    margin: 0 0.625em 0 0 !important;
+  }
+
+  .btn, input.form-control, .input-group-text {
+    font-size: 14px !important;
+    padding: 4px 8px !important;
+    height: 31px !important;
+  }
+}
+
+@media all and (max-width: 865px) {
+  .recipe-container, .recipes-content, .create-edit-recipe {
+    width: 85% !important;
+  }
+}
+
+.login {
+  width: 55% !important;
+
+  .login-container {
+    padding: 2em 3em !important;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .users-content, .parser-content, .recipes-content, .recipe-container, .create-edit-recipe {
+    width: 90% !important;
+  }
+
+  .user-container, .parser-form {
+    width: 85% !important;
+  }
+
+  .users-container {
+    padding: 1.5em 0 !important;
+  }
+
+  .recipe-name-text {
+    margin: 0 .5em !important;
+  }
+
+  .xl-modal {
+    > .modal-dialog {
+      width: 80% !important;
+      margin: auto !important;
+    }
+  }
+
+  .login {
+    width: 60% !important;
+
+    .login-container {
+      padding: 1.5em 2.5em !important;
+    }
+  }
+}
+
+@media all and (max-width: 425px) {
+  .user-container, .parser-form, .recipe-container, .recipes-content, .create-edit-recipe {
+    width: 95% !important;
+  }
+
+  .card-header, .card-body {
+    padding: 0.75em 0.75em !important;
+  }
+
+  .users-container {
+    padding: 1em 0 !important;
+  }
+
+  .login {
+    width: 80% !important;
+
+    .login-container {
+      padding: 1.5em 1em !important;
+    }
+  }
+
+  .xl-modal {
+    > .modal-dialog {
+      width: 95% !important;
+    }
+  }
+
+  .btn-group{
+    >button {
+      >span {
+        display: none !important;
+      }
+      >fa-icon {
+        margin: 0 !important;
+      }
+    }
+  }
+}
+
+//ALERTS ##################################################
+.notification {
+  margin:$notification-margin;
+  width: 70%;
+  text-align: center;
+}
+
+//MODAL ##################################################
+
+.button-close-modal,
+.button-close-modal:focus {
+  border: none;
+  padding: $button-close-modal-padding;
+  margin: $button-close-modal-margin;
+  color: $main-color;
+  background: none;
+  outline: none
+}
+
+.modal-dark-backdrop {
+  background-color: $main-dark-color !important;
+  opacity: $modal-dark-backdrop-opacity !important;
+}
+
+.modal-content {
+  @extend %default-container
+}
+
+.modal-header{
+  @extend .card-header;
+  text-align: center !important;
+}
+
+.modal-body {
+  padding: 0 !important;
+}
+
+.modal-footer{
+  @extend .card-footer;
+
+  button{
+    padding: $modal-footer-button-padding;
+    margin: $modal-footer-button-margin !important;
+  }
+}
+
+.xl-modal {
+  > .modal-dialog {
+    max-width: 100%;
+    width: 60%;
+    overflow-y: initial !important;
+
+    > .modal-content {
+
+      .modal-body {
+        max-height: 85vh;
+        overflow-y: auto;
+      }
+    }
+  }
+}
+
+//LINK ##################################################
+
+a:hover {
+  color: $second-color !important;
+}
+
+p, a.active{
+  color: $second-light-color !important;
+}
+
+//BUTTON ##################################################
+
+.btn-success{
+  color: $main-dark-color !important;
+  background-color: $second-dark-color !important;
+  border-color: $second-color !important;
+}
+
+.btn-success:hover {
+  background-color: $second-color !important;
+  border-color: $second-color !important;
+}
+
+.btn-outline-success {
+  color: $white !important;
+  border-color: $second-dark-color!important;
+  background-color: $main-dark-color!important;
+}
+
+.btn-outline-success:hover {
+  color: $main-dark-color !important;
+  border-color: $second-dark-color !important;
+  background-color: $second-color !important;
+}
+
+.btn-success:active,
+.btn-outline-success:active {
+  color: $main-dark-color !important;
+  border-color: $second-light-color !important;
+  background-color: $second-light-color !important;
+  box-shadow: $default-box-shadow !important;
+}
+
+.btn-success:focus,
+.btn-outline-success:focus {
+  box-shadow: none !important;
+}
+
+.btn, .btn-group {
+  white-space: nowrap !important;
+}
+
+//CARD ##################################################
+
+.card-header, .card-footer {
+ @extend %default-container-footer
+}
+
+.card {
+  @extend %default-container;
+  margin: $card-margin !important;
+}
+
+//FORM ##################################################
+
+.input-group {
+  width: auto !important;
+}
+
+.form-control:focus {
+  border-color: $second-color !important;
+  box-shadow: $default-box-shadow !important;
+}
+
+//HEADER ##################################################
+
+.navbar-toggler {
+  color: $second-light-color !important;
+  outline: none !important;
+  box-shadow: none;
+}
+
+.collapse.show {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center;
+  justify-content: center !important;
+  padding: .5em 15em !important;
+
+  & .nav-element{
+    width: 100% !important;
+    display: flex;
+    justify-content: space-between !important;
+    padding: .5em;
+  }
+
+  .app-watcher {
+    >div {
+      flex-direction: row !important;
+      justify-content: space-around !important;
+      width: 100% !important;
+     }
+  }
+
+  .user-section >button{
+    text-align: center;
+    width: 100% !important;
+  }
+}

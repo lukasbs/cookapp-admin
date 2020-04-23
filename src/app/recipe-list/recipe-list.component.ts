@@ -1,9 +1,9 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnChanges, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AppService} from '../app.service';
 import {NgForm} from '@angular/forms';
-import {Router} from '@angular/router';
-import {toArray} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-recipe-list',
@@ -18,7 +18,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   currentRecipesPageChanged: Subscription;
   messageChanged: Subscription;
 
-  constructor(private appService: AppService, private router: Router) { }
+  constructor(private appService: AppService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) { }
 
   async ngOnInit() {
     this.recipeListChanged = this.appService.recipeListChanged.subscribe(
@@ -63,14 +63,34 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     this.appService.currentRecipesPageChanged.next(this.appService.currentRecipesPage);
   }
 
-  addHandler() {
-    this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false' } });
+  addHandler(recipeCreateEdit) {
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { edit: 'false' },
+        queryParamsHandling: 'merge'
+      });
+    this.modalService.open(recipeCreateEdit, { size: 'lg', centered: true, backdropClass: 'modal-dark-backdrop'})
+      .result.then(() => {}, () => {
+          this.router.navigate(['/recipe-list']);
+        });
   }
 
-  editHandler(i: number) {
+  editHandler(i: number, recipeCreateEdit) {
     this.appService.currentlyEditedRecipe = this.currentPageRecipes[i];
     this.appService.currentlyEditedRecipeChanged.next(this.appService.currentlyEditedRecipe);
-    this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'true' } });
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { edit: 'true' },
+        queryParamsHandling: 'merge'
+      });
+    this.modalService.open(recipeCreateEdit, { windowClass: 'xl-modal', centered: true, backdropClass: 'modal-dark-backdrop'})
+      .result.then(() => {}, () => {
+          this.router.navigate(['/recipe-list']);
+        });
   }
 
   previewHandler(i: number) {

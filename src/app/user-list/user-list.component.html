@@ -1,37 +1,62 @@
-<div class="mt-5 mb-3 col-xl-9 col-8 m-auto alert" id="messageRow" #message></div>
-<form (ngSubmit)="searchHandler(f)" #f="ngForm">
-  <div class="form-row p-2">
-    <div class="col-7">
-      <input id="searchUser" name="searchUser" class="form-control" ngModel type="text" placeholder="Szukaj...">
-    </div>
-    <div class="col-2">
-      <button type="submit" class="btn btn-primary">Szukaj</button>
+<div class="" id="messageRow" #message></div>
+
+<div class="card text-center users-content">
+  <div class="card-header flex-column">
+    <h1>Panel Użytkowników</h1>
+    <hr>
+    <div class="d-inline-flex users-misc-panel justify-content-center">
+      <button type="button" class="btn btn-outline-success users-add-button" (click)="addHandler(userCreateEdit)"
+              placement="top"  ngbPopover="Dodaj nowego urzytkownika!"
+              [openDelay]="300" [closeDelay]="500" triggers="mouseenter:mouseleave">
+        <fa-icon [icon]="['fas', 'user-plus']"></fa-icon>
+      </button>
+      <form class=" input-group search-bar" (ngSubmit)="searchHandler(f)" #f="ngForm">
+        <input id="searchUser" name="searchUser" class="form-control" ngModel type="text" placeholder="Szukaj...">
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-outline-success" placement="bottom"  ngbPopover="Szukaj!"
+                  [openDelay]="300" [closeDelay]="500" triggers="mouseenter:mouseleave">
+            <fa-icon [icon]="['fas', 'search']"></fa-icon>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
-</form>
 
-<div class="p-2">
-  <button type="button" class="btn btn-primary" (click)="addHandler()">Dodaj nowego użytkownika</button>
-</div>
-
-<div *ngIf="this.currentPageUsers !== null">
-  <div class="d-flex border border-secondary rounded m-2 bg-light" *ngFor="let user of currentPageUsers; let i = index">
-    <div class="d-flex mr-auto p-2 align-items-center">
-      <p class="mb-0 ml-3">{{user.name}}</p>
+  <div class="card-body users-container flex-column" *ngIf="this.currentPageUsers !== null">
+    <div class="d-flex user-container justify-content-between" *ngFor="let user of currentPageUsers; let i = index">
+      <p class="user-name-text">{{user.name}}</p>
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline-success" (click)="editHandler(i, userCreateEdit)"
+                placement="left"  ngbPopover="Edutyj urzytkownika!"
+                [openDelay]="300" [closeDelay]="500" triggers="mouseenter:mouseleave">
+          <fa-icon [icon]="['fas', 'user-edit']"></fa-icon>
+          <span>Edytuj</span>
+        </button>
+        <button type="button" class="btn btn-outline-success" (click)="deleteHandler(i)"
+                placement="top"  ngbPopover="Usuń urzytkownika!"
+                [openDelay]="300" [closeDelay]="500" triggers="mouseenter:mouseleave">
+          <fa-icon [icon]="['fas', 'user-times']"></fa-icon>
+          <span>Usuń</span>
+        </button>
+      </div>
     </div>
-    <div class="p-2">
-      <button type="button" class="btn btn-primary" (click)="editHandler(i)">Edytuj</button>
-    </div>
-    <div class="p-2">
-      <button type="button" class="btn btn-primary" (click)="deleteHandler(i)">Usuń</button>
+    <div *ngIf="appService.userList.length === 0">
+      <p>Brak użytkowników!</p>
     </div>
   </div>
-  <div class="row p-3">
-    <button *ngIf="appService.currentUsersPage > 0" type="button" class="btn btn-primary" (click)="previousPage()">Poprzednia strona</button>
-    <button *ngIf="appService.currentUsersPage < appService.userListChunked.length - 1" type="button" class="btn btn-primary" (click)="nextPage()">Następna strona</button>
+
+  <div class="card-footer d-inline-flex justify-content-around">
+    <button *ngIf="appService.currentUsersPage > 0" type="button" class="btn btn-outline-success" (click)="previousPage()">
+      <fa-icon class="footer-icon" [icon]="['fas', 'chevron-left']"></fa-icon>
+      <span>Poprzednia strona</span>
+    </button>
+    <button *ngIf="appService.currentUsersPage < appService.userListChunked.length - 1" type="button" class="btn btn-outline-success" (click)="nextPage()">
+      <span>Następna strona</span>
+      <fa-icon class="footer-icon" [icon]="['fas', 'chevron-right']"></fa-icon>
+    </button>
   </div>
 </div>
-<div *ngIf="appService.userList.length === 0">
-  <p>Brak użytkowników!</p>
-</div>
 
+<ng-template #userCreateEdit let-modal>
+    <app-user-edit></app-user-edit>
+</ng-template>

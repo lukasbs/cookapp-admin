@@ -1,30 +1,67 @@
-<div class="row col-7">
-  <p id="recipeName">{{recipe.name}}</p>
-</div>
-<div class="row col-7">
-  <p id="recipeSource">{{recipe.source}}</p>
-</div>
-<div class="row col-7">
-<!--  <p id="recipeImage">{{recipe.image}}</p>-->
-  <img src="{{recipe.image}}" height="300" width="500">
-</div>
-<div class="row col-7">
-  <textarea readonly id="recipeDescription" cols="100" rows="20">{{recipe.description}}</textarea>
-</div>
+<article class="recipe-view">
+  <div class="recipe-container">
 
-<div *ngFor="let ingredient of recipe.ingredients; let i = index">
-  <div class="p-2 col-7">
-    <div class="p-2">
-      <p>{{ingredient.name}}</p>
-    </div>
-    <div class="p-2">
-      <p>{{ingredient.amount}}</p>
-    </div>
-  </div>
-</div>
+    <section class="recipe-header-section">
+      <aside class="recipe-image">
+        <img src="{{recipe.image}}" alt="Delicious dish">
+      </aside>
+      <div class="recipe-title">
+        <h1 class="recipe-name">{{recipe.name}}</h1>
+        <p class="recipe-source">by {{recipe.source}}</p>
+      </div>
+    </section>
 
-<div class="row p-2 col-7">
-  <div class="col-2">
-    <button type="button" class="btn btn-primary" routerLink="../recipe-list">Powrót</button>
+    <section class="recipe-ingredients-section">
+      <h2 class="recipe-ingredients-header">Składniki:</h2>
+      <div class="recipe-ingredients-list">
+        <div *ngFor="let ingredient of recipe.ingredients; let i = index">
+          <div class="recipe-ingredient">
+            <span class="recipe-ingredient-name">{{ingredient.name}}</span>
+            <span class="recipe-ingredient-amount">{{ingredient.amount}}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="recipe-description-section">
+      <article class="recipe-description"><span>{{recipe.description}}</span></article>
+      <h2 class="recipe-description-header">Przygotowanie:</h2>
+    </section>
+    <footer class="recipe-footer">
+      <button class="btn btn-outline-success" routerLink="../recipe-list" type="button">
+        <fa-icon class="footer-icon" [icon]="['fas', 'chevron-left']"></fa-icon>
+        <span>Powrót</span>
+      </button>
+    </footer>
   </div>
-</div>
+</article>
+<!--<div class="row col-7">-->
+<!--  <p id="recipeName">{{recipe.name}}</p>-->
+<!--</div>-->
+<!--<div class="row col-7">-->
+<!--  <p id="recipeSource">{{recipe.source}}</p>-->
+<!--</div>-->
+<!--<div class="row col-7">-->
+<!--&lt;!&ndash;  <p id="recipeImage">{{recipe.image}}</p>&ndash;&gt;-->
+<!--  <img src="{{recipe.image}}" height="300" width="500">-->
+<!--</div>-->
+<!--<div class="row col-7">-->
+<!--  <textarea readonly id="recipeDescription" cols="100" rows="20">{{recipe.description}}</textarea>-->
+<!--</div>-->
+
+<!--<div *ngFor="let ingredient of recipe.ingredients; let i = index">-->
+<!--  <div class="p-2 col-7">-->
+<!--    <div class="p-2">-->
+<!--      <p>{{ingredient.name}}</p>-->
+<!--    </div>-->
+<!--    <div class="p-2">-->
+<!--      <p>{{ingredient.amount}}</p>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="row p-2 col-7">-->
+<!--  <div class="col-2">-->
+<!--    <button type="button" class="btn btn-primary" routerLink="../recipe-list">Powrót</button>-->
+<!--  </div>-->
+<!--</div>-->

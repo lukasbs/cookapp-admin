@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subject} from 'rxjs';
 import {MessageModel} from './model/MessageModel';
 import {UserModel} from './model/UserModel';
 import {RecipeModel} from './model/RecipeModel';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class AppService {
@@ -33,7 +34,7 @@ export class AppService {
   public currentlyEditedRecipe: RecipeModel;
   public currentlyEditedRecipeChanged = new Subject<RecipeModel>();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) {
   }
 
   doLogin(login, pass) {
@@ -140,7 +141,7 @@ export class AppService {
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.router.navigate(['/user-list']);
+          this.getAllUsers();
         }
       },
       err => {
@@ -169,7 +170,7 @@ export class AppService {
     }).subscribe(
       data => {
         if (data.status === 201) {
-          this.router.navigate(['/user-list']);
+          this.getAllUsers();
         }
       },
       err => {
@@ -248,7 +249,7 @@ export class AppService {
     }).subscribe(
       data => {
         if (data.status === 201) {
-          this.router.navigate(['/recipe-list']);
+          this.getAllRecipes();
         }
       },
       err => {
@@ -282,7 +283,7 @@ export class AppService {
     }).subscribe(
       data => {
         if (data.status === 200) {
-          this.router.navigate(['/recipe-list']);
+          this.getAllRecipes();
         }
       },
       err => {
@@ -323,7 +324,7 @@ export class AppService {
     );
   }
 
-  parseHTML(url: string, site: string) {
+  parseHTML(url: string, site: string, recipeCreateEdit) {
     this.http.get(url, {
       observe: 'response',
       headers: { Accept: 'text/html' },
@@ -331,9 +332,9 @@ export class AppService {
     }).subscribe(
       data => {
         if (site === 'przepisy') {
-          this.przepisyAlgorythm(data, url);
+          this.przepisyAlgorythm(data, url, recipeCreateEdit);
         } else if ('kukbuk') {
-          this.kukbukAlgorythm(data, url);
+          this.kukbukAlgorythm(data, url, recipeCreateEdit);
         }
       },
       err => {
@@ -343,7 +344,45 @@ export class AppService {
     );
   }
 
-  przepisyAlgorythm(data, url) {
+  // przepisyAlgorythm(data, url, recipeCreateEdit) {
+  //   try {
+  //     const parser = new DOMParser();
+  //     const doc = parser.parseFromString(data.body, 'text/html');
+  //
+  //     const name = doc.getElementsByClassName('recipe-details-title').item(0).firstChild.firstChild.textContent;
+  //
+  //     let description = '';
+  //     const descriptionNodes = doc.getElementsByClassName('recipe-container-steps').item(0).getElementsByTagName('li');
+  //     for (let i = 0; i < descriptionNodes.length; i++) {
+  //       description += '  ' + descriptionNodes.item(i).getElementsByClassName('step-responsive-text').item(0).textContent.trim() + '\n';
+  //     }
+  //
+  //     const ingredients = [];
+  //     const ingredientsNodes = doc.getElementsByClassName('ingredient-ul').item(0).getElementsByClassName('ingredient-li');
+  //     for (let i = 0; i < ingredientsNodes.length; i++) {
+  //       const ingredientName = ingredientsNodes.item(i).getElementsByClassName('ingredient-name').item(0).textContent;
+  //       const ingredientAmount = ingredientsNodes.item(i).getElementsByClassName('quantity').length > 0 ?
+  //         ingredientsNodes.item(i).getElementsByClassName('quantity').item(0).textContent : '0 g';
+  //       ingredients.push({name: ingredientName, amount: ingredientAmount});
+  //     }
+  //
+  //     const image = doc.getElementsByClassName('recipe-preview-image').item(0).getElementsByClassName('holder')
+  //       .item(0).getElementsByTagName('img').item(0).getAttribute('data-src');
+  //
+  //     this.currentlyEditedRecipe = {name, description, image, source: 'Przepis ze strony przepisy.pl - oryginał: ' + url, ingredients};
+  //     this.currentlyEditedRecipeChanged.next(this.currentlyEditedRecipe);
+  //     this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' }, queryParamsHandling: 'merge' });
+  //     this.modalService.open(recipeCreateEdit, { size: 'lg', centered: true, backdropClass: 'modal-dark-backdrop'})
+  //       .result.then(() => {}, () => {
+  //       this.router.navigate(['/recipe-list']);
+  //     });
+  //   } catch (Error) {
+  //     this.message = {text: 'Błąd podczas parsowania!', type: 'ERROR'};
+  //     this.messageChanged.next(this.message);
+  //   }
+  // }
+
+  przepisyAlgorythm(data, url, recipeCreateEdit) {
     try {
       const parser = new DOMParser();
       const doc = parser.parseFromString(data.body, 'text/html');
@@ -370,14 +409,14 @@ export class AppService {
 
       this.currentlyEditedRecipe = {name, description, image, source: 'Przepis ze strony przepisy.pl - oryginał: ' + url, ingredients};
       this.currentlyEditedRecipeChanged.next(this.currentlyEditedRecipe);
-      this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' } });
+      this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' }, queryParamsHandling: 'merge' });
     } catch (Error) {
       this.message = {text: 'Błąd podczas parsowania!', type: 'ERROR'};
       this.messageChanged.next(this.message);
     }
   }
 
-  kukbukAlgorythm(data, url) {
+  kukbukAlgorythm(data, url, recipeCreateEdit) {
     try {
       const parser = new DOMParser();
       const doc = parser.parseFromString(data.body, 'text/html');
@@ -406,8 +445,11 @@ export class AppService {
 
       this.currentlyEditedRecipe = {name, description, image, source: 'Przepis ze strony kukbuk.pl - oryginał: ' + url, ingredients};
       this.currentlyEditedRecipeChanged.next(this.currentlyEditedRecipe);
-      this.router.navigate(['/recipe-edit'], { queryParams: { edit: 'false', parse: 'true' } });
-
+      this.router.navigate([], { relativeTo: this.route, queryParams: { edit: 'false', parse: 'true' }, queryParamsHandling: 'merge' });
+      this.modalService.open(recipeCreateEdit, { size: 'lg', centered: true, backdropClass: 'modal-dark-backdrop'})
+        .result.then(() => {}, () => {
+        this.router.navigate(['/recipe-list']);
+      });
     } catch (Error) {
       this.message = {text: 'Błąd podczas parsowania!', type: 'ERROR'};
       this.messageChanged.next(this.message);
@@ -416,17 +458,18 @@ export class AppService {
 
   addErrorMessage(element, message) {
     this.clearClass(element);
-    element.classList.add('alert-danger');
+    element.classList.add('alert-danger', 'notification', 'alert');
     element.innerHTML = message;
   }
 
   clearClass(element) {
+    element.classList.remove('alert-danger', 'notification', 'alert');
     element.innerHTML = '';
     this.message = {text: '', type: ''};
   }
 
   cutIntoChunks(initialList) {
-    const chunkSize = 5;
+    const chunkSize = 10;
     const listChunked = [];
 
     for (let i = 0, j = 0; i < initialList.length; i += chunkSize, j++) {

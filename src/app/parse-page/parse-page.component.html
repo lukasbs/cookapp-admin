@@ -1,18 +1,33 @@
-<div class="mt-5 mb-3 col-xl-9 col-8 m-auto alert" id="messageRow" #message></div>
-<form (ngSubmit)="parseHandler(f)" #f="ngForm">
-  <div class="form-row p-2">
-    <div class="col-5">
-      <input required id="urlValue" name="urlValue" class="form-control" ngModel type="text" placeholder="Url...">
-    </div>
-    <div class="col-2">
-      <select required id="site" name="site" ngModel class="form-control">
-        <option hidden value="" disabled selected>Wybierz stronę</option>
-        <option value="przepisy">Przepisy.pl</option>
-        <option value="kukbuk">kukbuk.pl</option>
-      </select>
-    </div>
-    <div class="col-2">
-      <button type="submit" [disabled]="!f.valid" class="btn btn-primary">Parsuj</button>
-    </div>
+<div class="" id="messageRow" #message></div>
+
+<div class="card text-center parser-content">
+  <div class="card-header flex-column">
+    <h1>Parsowanie przepisów</h1>
   </div>
-</form>
+
+  <div class="card-body d-flex justify-content-center">
+    <form class="parser-form" (ngSubmit)="parseHandler(f, recipeCreateEdit)" #f="ngForm">
+      <div class="d-flex justify-content-center input-group">
+        <input required id="urlValue" name="urlValue" class="form-control url" ngModel type="text" aria-label="Recipe url" placeholder="Url...">
+        <select required id="site" name="site" ngModel class="form-control page" aria-label="Recipe source">
+          <option hidden value="" disabled selected>Wybierz stronę</option>
+          <option value="przepisy">Przepisy.pl</option>
+          <option value="kukbuk">kukbuk.pl</option>
+        </select>
+        <div class="input-group-append">
+          <button type="submit" [disabled]="!f.valid" class="btn btn-success" placement="bottom"
+                  ngbPopover="Po sparsowaniu linku otworzy się okno dodawania przepisu!" [openDelay]="300" [closeDelay]="500" triggers="mouseenter:mouseleave">
+            Parsuj
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="card-footer d-inline-flex justify-content-around">
+  </div>
+</div>
+
+<ng-template #recipeCreateEdit let-modal>
+  <app-recipe-edit></app-recipe-edit>
+</ng-template>

@@ -1,41 +1,76 @@
-<div class="mt-5 mb-3 col-xl-9 col-8 m-auto alert" id="messageRow" #message></div>
-<form (ngSubmit)="editMode ? editHandler(f) : saveHandler(f)" #f="ngForm">
-  <div class="form-row p-2 col-7">
-    <input required id="recipeName" name="recipeName" class="form-control" [ngModel]="recipe.name" type="text" placeholder="Nazwa...">
-  </div>
-  <div class="form-row p-2 col-7" *ngIf="params.parse === 'true' || params.edit === 'true'">
-    <input required id="recipeSource" name="recipeSource" class="form-control" [ngModel]="recipe.source" type="text" placeholder="Źródło...">
-  </div>
-  <div class="form-row p-2 col-7">
-    <input required id="recipeImage" name="recipeImage" class="form-control" [ngModel]="recipe.image" type="text" placeholder="Zdjęcie...">
-  </div>
-  <div class="form-row p-2 col-7">
-    <textarea required id="recipeDescription" name="recipeDescription" class="form-control" [ngModel]="recipe.description" type="text" placeholder="Opis..."></textarea>
-  </div>
+<div class="modal-header">
+  <h2 class="modal-title">{{editMode ? 'Edycja Przepisu' : 'Tworzenie Przepisu'}}</h2>
+  <button class="button-close-modal" (click)="closeHandler()" type="button" placement="left"
+          ngbPopover="Zamknij kartę bez zapisywania zmian!" [openDelay]="300" [closeDelay]="500" triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="['fas', 'times']"></fa-icon>
+  </button>
+</div>
+<div class="modal-body">
+  <form #f="ngForm">
+    <div class="flex-column create-edit-recipe">
+      <div class="form-group">
+        <label for="recipeName">Nazwa przepisu: </label>
+        <input required id="recipeName" name="recipeName" class="form-control" [ngModel]="recipe.name" type="text" placeholder="Nazwa potrawy, np. Kurczak Pomoarańczowy">
+      </div>
+      <div class="form-group" *ngIf="params.parse === 'true' || params.edit === 'true'">
+        <label for="recipeSource">Żródło przepisu: </label>
+        <input required id="recipeSource" name="recipeSource" class="form-control" [ngModel]="recipe.source" type="text" placeholder="Źródło...">
+      </div>
+      <div class="form-group">
+        <label for="recipeImage">Zdjęcia: </label>
+        <input required id="recipeImage" name="recipeImage" class="form-control" [ngModel]="recipe.image" type="text" placeholder="Tytułowe zdjęcie potrawy...">
+      </div>
+      <div class="form-group">
+        <label for="recipeDescription">Opis: </label>
+        <textarea required id="recipeDescription" name="recipeDescription" class="form-control" [ngModel]="recipe.description" type="text" rows="15" placeholder="Szczegółowe instrukcjie przygotowania potrawy..."></textarea>
+      </div>
 
-  <div *ngFor="let ingredient of recipe.ingredients; let i = index">
-    <div class="form-row p-2 col-7">
-      <div class="p-2">
-        <input required name="ingredientName-{{i}}" class="form-control" [(ngModel)]="ingredient.name" type="text" placeholder="Nazwa...">
-      </div>
-      <div class="p-2">
-        <input required name="ingredientAmount-{{i}}" class="form-control" [(ngModel)]="ingredient.amount" type="text" placeholder="Ilość...">
-      </div>
-      <div class="p-2">
-        <button type="button" class="btn btn-danger" (click)="deleteIngredient(i)">X</button>
-      </div>
-    </div>
-  </div>
-  <div class="form-row p-2 col-7">
-    <button type="button" class="btn btn-success" (click)="addIngredient()">Dodaj składnik</button>
-  </div>
+      <div class="ingredients-panel">
+        <div  class="ingredients-title">
+          <span>Lista składników:</span>
+        </div>
 
-  <div class="form-row p-2 col-7">
-    <div class="col-2">
-      <button type="submit" [innerText]="editMode ? 'Edit':'Zapisz'" [disabled]="!f.valid" class="btn btn-primary"></button>
+        <div *ngFor="let ingredient of recipe.ingredients; let i = index">
+          <div class="ingredient-body">
+            <div class="input-group">
+              <div class="input-group-prepend ingredient-index">
+                <span class="input-group-text">{{i+1}}.</span>
+              </div>
+              <input required name="ingredientName-{{i}}" class="form-control ingredient-name" [(ngModel)]="ingredient.name" type="text" placeholder="Nazwa składnika..." aria-label="Ingredient name">
+              <input required name="ingredientAmount-{{i}}" class="form-control ingredient-quantity" [(ngModel)]="ingredient.amount" type="text" placeholder="Ilość..." aria-label="Ingredient quantity">
+              <div class="input-group-append ingredient-footer">
+                <button type="button" class="btn btn-danger" (click)="deleteIngredient(i)" placement="left"
+                        ngbPopover="Kliknij aby usunąć składnik!" [openDelay]="300" [closeDelay]="500"
+                        triggers="mouseenter:mouseleave">
+                  <fa-icon [icon]="['fas', 'times']"></fa-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-success ingredients-footer d-flex" (click)="addIngredient()"
+                placement="top" ngbPopover="Dodaj nowy składnik!" [openDelay]="300" [closeDelay]="500"
+                triggers="mouseenter:mouseleave">
+          <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+        </button>
+      </div>
     </div>
-    <div class="col-2">
-      <button type="button" class="btn btn-primary" routerLink="../recipe-list">Powrót</button>
-    </div>
-  </div>
-</form>
+  </form>
+
+</div>
+<div class="modal-footer d-flex justify-content-center">
+  <button type="button" class="btn btn-outline-success modal-footer-button" (click)="closeHandler()"
+          placement="top" ngbPopover="Wróć do listy z przepisami bez zapisywania zmian!"
+          [openDelay]="300" [closeDelay]="500" triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="['fas', 'times']"></fa-icon>
+    <span>Powrót</span>
+  </button>
+  <button type="button" [disabled]="!f.valid" class="btn btn-outline-success modal-footer-button"
+          (click)="editMode ? editHandler(f) : saveHandler(f)" placement="top-left"
+          ngbPopover="Zapisz zmiany i dodaj przepis do bazy!" [openDelay]="300" [closeDelay]="500"
+          triggers="mouseenter:mouseleave">
+    <fa-icon [icon]="['fas', 'check']"></fa-icon>
+    <span>Zapisz</span>
+  </button>
+</div>

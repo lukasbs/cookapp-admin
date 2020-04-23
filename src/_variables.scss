@@ -1,0 +1,100 @@
+@import "constrains";
+
+$font-family-base: -apple-system, system-ui, Quicksand, sans-serif !default;
+
+//GENERAL
+$main-dark-color: $gray-dark;
+$main-color: $gray;
+$main-light-color: $gray-light;
+$second-dark-color: $green-dark;
+$second-color: $green;
+$second-light-color: $green-light;
+
+//DEFAULT & CUSTOM & BOOTSTRAP OVERRIDE
+$notification-margin: 3.5em auto;
+$modal-footer-button-padding: 0.375em 2em;
+$modal-footer-button-margin: 0 1.5em;
+$button-close-modal-margin: auto 1em;
+$button-close-modal-padding: 0;
+$hr-border-color: $second-light-color;
+$hr-margin: 1em 3em;
+$default-container-box-shadow: 0 0 0.7em 0.3em #43f6ae;
+$default-box-shadow: 0 0 0.2em 0.2em $second-light-color;
+$default-container-border: 1px solid $second-color;
+
+$card-margin: 7em auto;
+$modal-dark-backdrop-opacity: 0.97;
+
+//HEADER
+$navigation-padding: 1.5em 6.25vw;
+$navigation-bg-color: $main-dark-color;
+$navigation-color: $second-dark-color;
+$navigation-box-shadow: 0 0 0.7em 0.2em $second-light-color;
+$status-bulb-margin: 0 0 0 0.625em;
+$status-bulb-color: $second-light-color;
+$app-watcher-text-margin: 0;
+$link-margin: 0 1.25em 0 0;
+$link-border-bottom: 1.3px solid $second-dark-color;
+$link-padding: 0.25em 0;
+$link-hover-border-color: $second-color;
+$link-active-border-color: $second-light-color;
+$link-icon-margin: 0 0.375em 0 0;
+$link-text-color: $white;
+$logout-icon-margin: 0  0 0 0.375em;
+
+//USERS LIST
+$users-misc-panel-padding: 0.5em;
+$users-add-button-margin: 0 1.5em;
+$users-container-padding: 2em 0;
+$user-container-border: 1px solid $main-dark-color;
+$user-container-border-radius: 0.25em;
+$user-container-background: $main-dark-color;
+$user-container-color: $white;
+$user-container-padding: 0.25em;
+$user-container-margin: 0.5em auto;
+$user-name-text-margin: 0 1em;
+$user-name-text-color: $white;
+$users-container-fa-icon-margin: 0 0.375em 0 0;
+$users-footer-icon-margin: 0 0.375em;
+
+//RECIPES LIST
+$recipes-misc-panel-padding: 0.5em;
+$recipes-add-button-margin: 0 1.5em;
+$recipes-container-padding: 2em 0;
+$recipe-container-border: 1px solid $main-dark-color;
+$recipe-container-border-radius: 0.25em;
+$recipe-container-background: $main-dark-color;
+$recipe-container-color: $white;
+$recipe-container-padding: 0.25em;
+$recipe-container-margin: 0.5em auto;
+$recipe-name-text-margin: 0 1em;
+$recipe-name-text-color: $white;
+$recipes-container-fa-icon-margin: 0 0.375em 0 0;
+$recipes-footer-icon-margin: 0 0.375em;
+
+//USER EDIT
+$create-edit-user-margin: 3em auto;
+$create-edit-user-fa-icon-margin: 0 0.375em 0 0;
+
+//RECIPE EDIT
+$create-edit-recipe-margin: 3em auto;
+$create-edit-recipe-ingredients-title-margin: 2em 0 1em 0;
+$create-edit-recipe-ingredients-title-border-color: $second-dark-color;
+$create-edit-recipe-ingredients-title-border-radius: 0.25em;
+$create-edit-recipe-ingredients-title-background: $main-dark-color;
+$create-edit-recipe-ingredients-title-color: $white;
+$create-edit-recipe-ingredients-footer-margin: 1em 0 2em 0;
+$create-edit-recipe-ingredient-body-margin: 0.5em 0;
+$create-edit-recipe-fa-icon-margin: 0 0.375em 0 0;
+
+//RECIPE VIEW
+$recipe-footer-fa-icon-margin: 0 0.375em 0 0;
+
+//LOGIN
+$login-page-container-padding: 2.5em 4em;
+$login-page-image-margin: 1.5em auto;
+$login-page-form-margin: auto;
+$login-page-h1-margin: 0.5em auto;
+$login-page-form-all-children-margin: 0.5em auto;
+$login-notification-margin: 1em auto;
+

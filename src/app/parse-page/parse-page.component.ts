@@ -28,12 +28,11 @@ export class ParsePageComponent implements OnInit {
     return !(form.value.urlValue === null || form.value.urlValue === '' || form.value.site === null || form.value.site === '');
   }
 
-  parseHandler(form: NgForm) {
+  parseHandler(form: NgForm, recipeCreateEdit) {
     if (this.validateForm(form)) {
-      this.appService.parseHTML(form.value.urlValue, form.value.site);
+      this.appService.parseHTML(form.value.urlValue, form.value.site, recipeCreateEdit);
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić polę adresu!');
     }
   }
-
 }

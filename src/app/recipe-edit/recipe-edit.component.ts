@@ -1,9 +1,10 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AppService} from '../app.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgForm} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {RecipeModel} from '../model/RecipeModel';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -20,7 +21,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   public editMode;
   public params;
 
-  constructor(private appService: AppService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private appService: AppService, private modalService: NgbModal, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.routerSub = this.route.queryParams.subscribe(
@@ -69,6 +70,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     if (this.validateForm(form)) {
       this.appService.updateRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage, form.value.recipeSource,
         this.recipe.ingredients, this.recipe.name);
+      this.closeHandler();
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić wszystkie pola!');
     }
@@ -78,9 +80,14 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     if (this.validateForm(form)) {
       this.appService.addRecipe(form.value.recipeName, form.value.recipeDescription, form.value.recipeImage, 'cookapp',
         this.recipe.ingredients);
+      this.closeHandler();
     } else {
       this.appService.addErrorMessage(this.messageRef.nativeElement, 'Proszę wypełnić wszystkie pola!');
     }
+  }
+
+  closeHandler() {
+    this.modalService.dismissAll();
   }
 
   deleteIngredient(index: number) {

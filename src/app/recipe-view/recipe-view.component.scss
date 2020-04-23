@@ -1,0 +1,152 @@
+@import "../../variables";
+@import "../../styles";
+:host .recipe-view {
+  //background: linear-gradient(10deg, rgba(218,163,245,1) 0%, rgba(255,204,204,1) 30%, rgba(247,215,148,1) 100%) !important;
+  //background: linear-gradient(10deg, rgba(255,216,80,1)0%, rgba(180,204,78,1) 50%, rgba(255,255,255,1) 100%) !important;
+  //background: linear-gradient(10deg, rgba(186,197,75,1) 0%, rgba(211,220,130,1) 35%, rgba(237,237,220,1) 100%) !important;
+  //background: linear-gradient(10deg, rgba(223,169,13,1) 0%, rgba(244,220,140,1) 35%, rgba(255,240,225,1) 100%) !important;
+  //background: linear-gradient(10deg, rgba(255,145,136,1) 0%, rgba(255,201,134,1) 35%, rgba(255,246,194,1) 100%) !important;
+  //background: linear-gradient(10deg, rgba(186,155,0,1) 0%, rgba(255,219,110,1) 35%, rgba(255,240,189,1) 100%) !important;
+  //background: linear-gradient(10deg, rgba(190,108,0,1) 0%, rgba(245,201,0,1) 35%, rgba(187,207,0,1) 100%) !important;
+  //background: linear-gradient(10deg, rgba(194,132,50,1) 0%, rgba(245,219,100,1) 25%, rgba(197,209,84,1) 65%, rgba(255,240,189,1) 100%) !important;
+  background: linear-gradient(10deg, rgba(186,197,75,0.8) 0%, rgba(211,220,130,0.8) 35%, rgba(237,237,220,0.8) 100%) !important;
+  background: rgba(118, 174, 10, 0.7);
+  min-height: 93.2vh;
+
+  p, a, h1 {
+    color: #304607 !important;
+  }
+
+  .recipe-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
+    margin: 0 auto;
+
+    %recipe-section{
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      border-bottom: solid 1px $main-light-color;
+    }
+
+    .recipe-header-section {
+      @extend %recipe-section;
+      max-height: 700px;
+
+      .recipe-title {
+        width: 40%;
+        display: flex;
+        max-height: 700px;
+        margin: 0;
+        flex: 1 0 auto;
+        flex-direction: column;
+        align-content: center;
+        word-break: break-word;
+
+        .recipe-name{
+          padding: 2rem;
+          margin: 0;
+          text-align: center;
+          word-break: break-word;
+          overflow-wrap: break-word;
+        }
+
+        .recipe-source {
+          margin: 0;
+          padding: 1rem 2rem;
+          text-align: right;
+          font-style: italic;
+        }
+      }
+
+      .recipe-image {
+        display: flex;
+        width: 60%;
+        height: auto;
+        max-height: 700px;
+        margin: 0;
+        border-right: solid 1px $main-light-color;
+        box-shadow: 6px 0 10px -4px rgba(0,0,0,0.5);
+
+        img {
+          max-height: 699px;
+          width: 100%;
+        }
+      }
+    }
+
+    .recipe-ingredients-section {
+      @extend %recipe-section;
+
+      .recipe-ingredients-header {
+        width: 30%;
+        padding: 2rem;
+        text-align: center;
+        margin: 0;
+      }
+
+      .recipe-ingredients-list {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        background: url("src/assets/iKcF68.jpg");
+        color: $white;
+        padding: 2rem 4vw;
+        border-left: solid 1px $main-light-color;
+        box-shadow: -6px 0 10px -4px rgba(0,0,0,0.65);
+
+        .recipe-ingredient {
+          width: 100%;
+          display: inline-flex;
+          font-size: 1.3rem;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    .recipe-description-section {
+      @extend %recipe-section;
+
+      .recipe-description-header {
+        min-height: 350px;
+        width: 10%;
+        padding: 2rem;
+        text-align: center;
+        margin: 0;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+
+      .recipe-description {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 350px;
+        padding: 2rem;
+        text-align: justify;
+        text-justify: inter-character;
+        font-size: 1.2rem;
+        border-right: solid 1px $main-light-color;
+        box-shadow: 6px 0 10px -4px rgba(0,0,0,0.5);
+      }
+    }
+
+    .recipe-footer {
+      @extend %default-container-footer;
+
+      padding: 1.5rem;
+      display: flex;
+
+      >button {
+        margin: auto;
+
+        fa-icon {
+          margin: $recipe-footer-fa-icon-margin;
+        }
+      }
+    }
+  }
+}
