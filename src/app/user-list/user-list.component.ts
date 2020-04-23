@@ -28,6 +28,8 @@ export class UserListComponent implements OnInit, OnDestroy {
 
         if (this.appService.currentUsersPage > this.appService.userListChunked.length - 1) {
           this.appService.currentUsersPage = this.appService.userListChunked.length - 1;
+        } else if (this.appService.currentRecipesPage < 0) {
+          this.appService.currentUsersPage = 0;
         }
 
         this.appService.currentUsersPageChanged.next(this.appService.currentUsersPage);
