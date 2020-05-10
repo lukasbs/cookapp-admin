@@ -29,6 +29,10 @@
 
       .login-button {
         width: 100%;
+
+        .icon-right {
+          margin: $icon-right-margin
+        }
       }
     }
   }

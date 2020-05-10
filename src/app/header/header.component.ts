@@ -9,16 +9,12 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  // @ContentChild('backStatus') backRef: QueryList<ElementRef>;
   @ViewChild('backStatus') backRef: ElementRef;
   @ViewChild('clientStatus') clientRef: ElementRef;
 
-  backStatus: HTMLElement;
-  clientStatus: HTMLElement;
-
   intervalId = setInterval( () => {
       this.checkBackEnd();
-      // this.checkClient();
+      this.checkClient();
     }, 5000);
 
   constructor(private appService: AppService, private http: HttpClient, private router: Router) { }
@@ -61,15 +57,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   checkClient() {
-    // this.http.get('', {
-    //   observe: 'response',
-    //   withCredentials: true
-    // }).subscribe(
-      // data => {
-      //   this.clientRef.nativeElement.children[1].style.color = '#7bed9f';
-      // }, err => {
-        this.clientRef.nativeElement.children[1].style.color = '#ff6b81';
-      // }
+    this.http.post('http://localhost:8080/api/user/auth/check', {}, {
+      observe: 'response',
+      withCredentials: true
+    }).subscribe(
+      data => {
+        this.clientRef.nativeElement.children[1].style.color = '#7bed9f';
+      },
+      err => {
+        this.clientRef.nativeElement.children[1].style.color = '#ff6b81';      }
+    );
   }
 
   ngOnDestroy(): void {

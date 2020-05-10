@@ -7,7 +7,10 @@
       <input type="text" id="loginInput" class="form-control" placeholder="Login" required="" autofocus="" #loginInput>
       <label for="passwordInput" class="sr-only">Hasło</label>
       <input type="password" id="passwordInput" class="form-control" placeholder="Hasło" required="" #passwordInput>
-      <button class="btn btn-success login-button" id="loginButton" type="submit" (click)="doLogin()">Zaloguj się</button>
+      <button class="btn btn-success login-button" id="loginButton" type="submit" (click)="doLogin()">
+        <span>Zaloguj się</span>
+        <fa-icon class="icon-right" [icon]="['fas', 'sign-in-alt']"></fa-icon>
+      </button>
     </form>
     <div class="" id="messageRow" #message></div>
   </div>

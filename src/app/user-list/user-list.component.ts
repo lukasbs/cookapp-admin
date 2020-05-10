@@ -97,8 +97,8 @@ export class UserListComponent implements OnInit, OnDestroy {
   }
 
   deleteHandler(i: number) {
-    // this.appService.clearClass(this.messageRef.nativeElement);
-    // this.appService.deleteUser(this.appService.userListChunked[this.appService.currentUsersPage][i].name);
+    this.appService.clearClass(this.messageRef.nativeElement);
+    this.appService.deleteUser(this.appService.userListChunked[this.appService.currentUsersPage][i].name);
   }
 
   searchHandler(form: NgForm) {

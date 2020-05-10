@@ -21,10 +21,10 @@ import {CookieService} from 'ngx-cookie-service';
 
 import {library} from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faUsers, faList, faLayerGroup, faLightbulb, faSignOutAlt, faUserEdit, faUserPlus, faUserTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown, faTimes, faEdit, faPlus, faBan, faCheck, faBars} from '@fortawesome/free-solid-svg-icons';
-import { faListAlt, faNewspaper} from '@fortawesome/free-regular-svg-icons';
+import { faUsers, faList, faLayerGroup, faLightbulb, faSignOutAlt, faUserEdit, faUserPlus, faUserTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown, faTimes, faEdit, faPlus, faBan, faCheck, faBars, faSignInAlt} from '@fortawesome/free-solid-svg-icons';
+import { faListAlt, faNewspaper, faIdCard} from '@fortawesome/free-regular-svg-icons';
 
-library.add(faUsers, faListAlt, faNewspaper, faLayerGroup, faLightbulb, faSignOutAlt, faUserEdit, faUserPlus, faUserTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown, faTimes, faList, faEdit, faPlus, faBan, faCheck, faBars);
+library.add(faUsers, faListAlt, faNewspaper, faLayerGroup, faLightbulb, faSignOutAlt, faUserEdit, faUserPlus, faUserTimes, faSearch, faChevronLeft, faChevronRight, faChevronDown, faTimes, faList, faEdit, faPlus, faBan, faCheck, faBars, faIdCard, faSignInAlt);
 @NgModule({
   declarations: [
     AppComponent,
